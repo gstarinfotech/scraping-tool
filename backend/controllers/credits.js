@@ -1,7 +1,3 @@
-// ZenRows does not expose a public usage API
-// Each request with premium_proxy + js_render costs 25 credits
-// We track usage locally per session
-
 const CREDITS_PER_REQUEST = 1;
 let totalUsedThisSession = 0;
 

@@ -1,12 +1,19 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./db');
 
 const belkRouter = require('./routes/belk');
 const syncRouter = require('./routes/sync');
 const creditsRouter = require('./routes/credits');
 const boscovRouter = require('./routes/boscov');
 const walmartRoute = require('./routes/walmart');
+
+const omEmployeeRouter = require('./routes/orderManagementEmployee');
+const omAdminRouter = require('./routes/orderManagementAdmin');
+const omDataRouter = require('./routes/orderManagementData');
+
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +27,11 @@ app.use('/api/belk', syncRouter);
 app.use('/api/belk', creditsRouter);
 app.use('/api/boscov', boscovRouter);
 app.use('/api/walmart', walmartRoute);
+
+// Order Management
+app.use('/om/employee', omEmployeeRouter);
+app.use('/om/admin', omAdminRouter);
+app.use('/om/data', omDataRouter);
 
 app.get('/', (req, res) => {
     res.send('Scraper API running');

@@ -1,5 +1,5 @@
 const { JSDOM } = require('jsdom');
-const { scrapeBoscovProduct } = require('../utils/boscovScraper');
+const { scrapeBoscovProduct } = require('../utils/BoscovScraper');
 
 const extractUrls = (req, res) => {
     try {
