@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { extractProductData, scrapeWalmartProduct } = require('../controllers/walmart');
+const { extractUrls, scrapeUrl } = require('../controllers/walmart');
 
-router.post('/extracturls', extractProductData);
-router.post('/scrape', scrapeWalmartProduct);
+router.post('/extracturls', extractUrls);
+router.post('/scrape', scrapeUrl);
 
 module.exports = router;

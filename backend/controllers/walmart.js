@@ -148,4 +148,39 @@ function extractProductData(html) {
     return { hrefs, brands };
 }
 
-module.exports = { scrapeWalmartProduct, extractProductData };
+const extractUrls = (req, res) => {
+    try {
+        const { html } = req.body;
+        if (!html) return res.status(400).json({ status: false, msg: 'No HTML provided' });
+
+        const { hrefs, brands } = extractProductData(html);
+        const urls = [...new Set(hrefs)];
+
+        if (urls.length === 0) return res.status(404).json({ status: false, msg: 'No URLs found' });
+
+        res.status(200).json({ status: true, urls, count: urls.length, brands });
+    } catch (err) {
+        console.error('walmart extractUrls error:', err);
+        res.status(500).json({ status: false, msg: err.message });
+    }
+};
+
+const scrapeUrl = async (req, res) => {
+    try {
+        const { url, prefix } = req.body;
+        if (!url) return res.status(400).json({ status: false, msg: 'No URL provided' });
+
+        const products = await scrapeWalmartProduct(url, prefix || 'RC-R3');
+
+        if (!products || products.length === 0) {
+            return res.status(200).json({ status: false, msg: 'No products found', url });
+        }
+
+        res.status(200).json({ status: true, products, url });
+    } catch (err) {
+        console.error('walmart scrapeUrl error:', err);
+        res.status(500).json({ status: false, msg: err.message });
+    }
+};
+
+module.exports = { scrapeWalmartProduct, extractProductData, extractUrls, scrapeUrl };
